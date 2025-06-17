@@ -1,0 +1,107 @@
+:root {
+    --primary: #163E6C;
+    --secondary: #D20A11;
+    --background: #EBE6D6;
+}
+
+body {
+    font-family: 'PT Astra Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background);
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.navbar {
+    background-color: var(--primary);
+    color: white;
+    padding: 15px 0;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+.navbar a:hover {
+    color: var(--secondary);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.table th {
+    background-color: var(--primary);
+    color: white;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.btn {
+    background-color: var(--primary);
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: var(--secondary);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.error {
+    color: var(--secondary);
+    font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .navbar {
+        padding: 10px 0;
+    }
+
+    .table {
+        font-size: 0.9em;
+    }
+}

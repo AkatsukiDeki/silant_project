@@ -1,0 +1,73 @@
+silant/
+├── .env.example
+├── docker-compose.yml
+├── docker-compose.prod.yml
+├── manage.py
+├── requirements/
+│   ├── base.txt
+│   ├── dev.txt
+│   └── prod.txt
+├── backend/
+│   └── silant/
+│       ├── __init__.py
+│       ├── asgi.py
+│       ├── celery.py
+│       ├── settings/
+│       │   ├── __init__.py
+│       │   ├── base.py
+│       │   ├── dev.py
+│       │   └── prod.py
+│       ├── urls.py
+│       └── wsgi.py
+├── core/
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── filters.py
+│   ├── forms.py
+│   ├── management/
+│   │   └── commands/
+│   │       ├── __init__.py
+│   │       └── create_groups.py
+│   ├── migrations/
+│   │   └── __init__.py
+│   ├── models.py
+│   ├── templates/
+│   │   └── core/
+│   │       ├── base.html
+│   │       ├── complaint_detail.html
+│   │       ├── complaint_list.html
+│   │       ├── maintenance_detail.html
+│   │       ├── maintenance_list.html
+│   │       ├── vehicle_detail.html
+│   │       └── vehicle_list.html
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── accounts/
+│   ├── __init__.py
+│   ├── adapters.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── urls.py
+│   └── views.py
+├── api/
+│   ├── __init__.py
+│   ├── serializers.py
+│   ├── urls.py
+│   └── views.py
+├── static/
+│   ├── css/
+│   │   └── styles.css
+│   ├── img/
+│   │   └── logo.png
+│   └── js/
+│       └── main.js
+└── templates/
+    ├── 403.html
+    ├── 404.html
+    ├── 500.html
+    └── includes/
+        ├── footer.html
+        └── navbar.html

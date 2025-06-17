@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Список машин{% endblock %}
+
+{% block content %}
+<h1>Список машин</h1>
+
+<form method="get" class="filter-form">
+    {{ filterset.form|crispy }}
+    <button type="submit" class="btn">Фильтровать</button>
+    <button type="button" class="btn reset-filters">Сбросить</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Зав. №</th>
+            <th>Модель техники</th>
+            <th>Модель двигателя</th>
+            <th>Зав. № двигателя</th>
+            <th>Дата отгрузки</th>
+            <th>Клиент</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for vehicle in vehicles %}
+        <tr>
+            <td>{{ vehicle.factory_number }}</td>
+            <td>{{ vehicle.technique_model.title }}</td>
+            <td>{{ vehicle.engine_model.title }}</td>
+            <td>{{ vehicle.engine_number }}</td>
+            <td>{{ vehicle.shipment_date|date:"d.m.Y" }}</td>
+            <td>{{ vehicle.client.get_full_name }}</td>
+            <td>
+                <a href="{% url 'vehicle-detail' vehicle.pk %}" class="btn">Подробнее</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">Нет данных</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if is_paginated %}
+<div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+    {% endif %}
+
+    <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Вперед</a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% if perms.core.add_vehicle %}
+<a href="{% url 'vehicle-create' %}" class="btn">Добавить машину</a>
+{% endif %}
+{% endblock %}
