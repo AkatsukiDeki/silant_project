@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}ТО №{{ maintenance.id }}{% endblock %}
+
+{% block content %}
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h2>Техническое обслуживание №{{ maintenance.id }}</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Основная информация:</h4>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <strong>Машина:</strong>
+                        <a href="{% url 'vehicle-detail' maintenance.vehicle.pk %}">
+                            {{ maintenance.vehicle.factory_number }} ({{ maintenance.vehicle.technique_model.title }})
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Вид ТО:</strong> {{ maintenance.type.title }}
+                        {% if maintenance.type.description %}
+                            <p class="text-muted mt-1">{{ maintenance.type.description }}</p>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Дата проведения:</strong> {{ maintenance.date|date:"d.m.Y" }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Наработка:</strong> {{ maintenance.operating_hours }} м/час
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h4>Документы:</h4>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <strong>Заказ-наряд №:</strong> {{ maintenance.order_number }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Дата заказ-наряда:</strong> {{ maintenance.order_date|date:"d.m.Y" }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Следующее ТО:</strong>
+                        {% if maintenance.vehicle.next_maintenance_date %}
+                            {{ maintenance.vehicle.next_maintenance_date|date:"d.m.Y" }}
+                        {% else %}
+                            Не назначено
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <h4>Выполненные работы:</h4>
+            <div class="alert alert-light">
+                {% if maintenance.work_description %}
+                    {{ maintenance.work_description }}
+                {% else %}
+                    Описание работ не указано
+                {% endif %}
+            </div>
+        </div>
+
+        {% if perms.core.change_maintenance %}
+        <div class="mt-4">
+            <a href="{% url 'maintenance-update' maintenance.pk %}" class="btn btn-primary">Редактировать</a>
+            <a href="{% url 'maintenance-delete' maintenance.pk %}" class="btn btn-danger">Удалить</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-secondary text-white">
+        <h3>Организация</h3>
+    </div>
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <strong>Сервисная компания:</strong> {{ maintenance.service_company.get_full_name }}
+            </li>
+            <li class="list-group-item">
+                <strong>Дата создания записи:</strong> {{ maintenance.created_at|date:"d.m.Y H:i" }}
+            </li>
+            <li class="list-group-item">
+                <strong>Последнее обновление:</strong> {{ maintenance.updated_at|date:"d.m.Y H:i" }}
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

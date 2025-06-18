@@ -51,6 +51,18 @@ class Vehicle(models.Model):
         related_name='serviced_vehicles', verbose_name='Сервисная компания'
     )
 
+    next_maintenance_date = models.DateField(null=True, blank=True)
+    maintenance_notified = models.BooleanField(default=False)
+
+    def check_maintenance(self):
+        if self.next_maintenance_date and self.next_maintenance_date <= timezone.now().date() + timezone.timedelta(
+                days=7):
+            if not self.maintenance_notified:
+                from .tasks import notify_maintenance
+                notify_maintenance.delay(self.pk)
+                self.maintenance_notified = True
+                self.save()
+
     class Meta:
         ordering = ['-shipment_date']
         verbose_name = 'Машина'

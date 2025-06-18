@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                <h3>Поиск машины</h3>
+            </div>
+            <div class="card-body">
+                <form method="get" action="{% url 'vehicle-search' %}">
+                    <div class="mb-3">
+                        <label for="factory_number" class="form-label">Заводской номер:</label>
+                        <input type="text" class="form-control" id="factory_number" name="factory_number" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Найти</button>
+                </form>
+
+                {% if error %}
+                    <div class="alert alert-danger mt-3">{{ error }}</div>
+                {% endif %}
+
+                {% if vehicle %}
+                    <div class="mt-4">
+                        <h4>Результаты поиска:</h4>
+                        <table class="table">
+                            <tr><th>Зав. №</th><td>{{ vehicle.factory_number }}</td></tr>
+                            <tr><th>Модель техники</th><td>{{ vehicle.technique_model.title }}</td></tr>
+                            <!-- Только поля 1-10 согласно ТЗ -->
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

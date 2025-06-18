@@ -1,0 +1,31 @@
+<div class="d-flex justify-content-between mb-3">
+    <h3>Рекламации</h3>
+    {% if perms.core.add_complaint %}
+        <a href="{% url 'complaint-create' %}?vehicle={{ vehicle.pk }}" class="btn btn-primary">Добавить рекламацию</a>
+    {% endif %}
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Дата отказа</th>
+            <th>Узел отказа</th>
+            <th>Способ восстановления</th>
+            <th>Простой (дней)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for complaint in vehicle.complaints.all %}
+        <tr onclick="window.location='{% url 'complaint-detail' complaint.pk %}'" style="cursor: pointer;">
+            <td>{{ complaint.failure_date|date:"d.m.Y" }}</td>
+            <td>{{ complaint.failure_node.title }}</td>
+            <td>{{ complaint.recovery_method.title }}</td>
+            <td>{{ complaint.downtime }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" class="text-center">Нет данных о рекламациях</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

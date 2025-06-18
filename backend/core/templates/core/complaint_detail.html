@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Рекламация №{{ complaint.id }}{% endblock %}
+
+{% block content %}
+<div class="card mb-4">
+    <div class="card-header bg-danger text-white">
+        <h2>Рекламация №{{ complaint.id }}</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Основная информация:</h4>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <strong>Машина:</strong>
+                        <a href="{% url 'vehicle-detail' complaint.vehicle.pk %}">
+                            {{ complaint.vehicle.factory_number }} ({{ complaint.vehicle.technique_model.title }})
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Дата отказа:</strong> {{ complaint.failure_date|date:"d.m.Y" }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Наработка:</strong> {{ complaint.operating_hours }} м/час
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Узел отказа:</strong> {{ complaint.failure_node.title }}
+                        {% if complaint.failure_node.description %}
+                            <p class="text-muted mt-1">{{ complaint.failure_node.description }}</p>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h4>Восстановление:</h4>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <strong>Способ восстановления:</strong> {{ complaint.recovery_method.title }}
+                        {% if complaint.recovery_method.description %}
+                            <p class="text-muted mt-1">{{ complaint.recovery_method.description }}</p>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Использованные запчасти:</strong> {{ complaint.spare_parts|default:"Не указаны" }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Дата восстановления:</strong> {{ complaint.recovery_date|date:"d.m.Y" }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Время простоя:</strong> {{ complaint.downtime }} дней
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <h4>Описание отказа:</h4>
+            <div class="alert alert-light">
+                {{ complaint.failure_description }}
+            </div>
+        </div>
+
+        {% if perms.core.change_complaint %}
+        <div class="mt-4">
+            <a href="{% url 'complaint-update' complaint.pk %}" class="btn btn-primary">Редактировать</a>
+            <a href="{% url 'complaint-delete' complaint.pk %}" class="btn btn-danger">Удалить</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-secondary text-white">
+        <h3>Сервисная информация</h3>
+    </div>
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <strong>Сервисная компания:</strong> {{ complaint.service_company.get_full_name }}
+            </li>
+            <li class="list-group-item">
+                <strong>Дата создания записи:</strong> {{ complaint.created_at|date:"d.m.Y H:i" }}
+            </li>
+            <li class="list-group-item">
+                <strong>Последнее обновление:</strong> {{ complaint.updated_at|date:"d.m.Y H:i" }}
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

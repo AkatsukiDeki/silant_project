@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h2>Машина №{{ vehicle.factory_number }}</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Основные характеристики:</h4>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <strong>Модель техники:</strong> {{ vehicle.technique_model.title }}
+                        <p class="text-muted mt-1">{{ technique_description }}</p>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Двигатель:</strong> {{ vehicle.engine_model.title }} (№{{ vehicle.engine_number }})
+                        <p class="text-muted mt-1">{{ engine_description }}</p>
+                    </li>
+                    <!-- Остальные характеристики -->
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h4>Эксплуатация:</h4>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Грузополучатель:</strong> {{ vehicle.consignee }}</li>
+                    <li class="list-group-item"><strong>Адрес поставки:</strong> {{ vehicle.delivery_address }}</li>
+                    <li class="list-group-item"><strong>Следующее ТО:</strong>
+                        {% if vehicle.next_maintenance_date %}
+                            {{ vehicle.next_maintenance_date|date:"d.m.Y" }}
+                        {% else %}
+                            Не назначено
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Вкладки -->
+<ul class="nav nav-tabs mb-4" id="vehicleTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="to-tab" data-bs-toggle="tab" data-bs-target="#to" type="button">ТО</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="complaints-tab" data-bs-toggle="tab" data-bs-target="#complaints" type="button">Рекламации</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="timeline-tab" data-bs-toggle="tab" data-bs-target="#timeline" type="button">История</button>
+    </li>
+</ul>
+
+<div class="tab-content" id="vehicleTabsContent">
+    <div class="tab-pane fade show active" id="to" role="tabpanel">
+        {% include "core/_maintenance_list.html" %}
+    </div>
+    <div class="tab-pane fade" id="complaints" role="tabpanel">
+        {% include "core/_complaints_list.html" %}
+    </div>
+    <div class="tab-pane fade" id="timeline" role="tabpanel">
+        {% include "core/_timeline.html" %}
+    </div>
+</div>
+{% endblock %}

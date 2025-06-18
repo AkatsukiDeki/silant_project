@@ -1,0 +1,59 @@
+<div class="timeline-container">
+    {% for event in vehicle.lifecycleevent_set.all %}
+    <div class="timeline-event">
+        <div class="event-date">{{ event.date|date:"d.m.Y" }}</div>
+        <div class="event-icon">
+            {% if event.event_type == 'MAINTENANCE' %}
+                <i class="bi bi-tools"></i>
+            {% elif event.event_type == 'COMPLAINT' %}
+                <i class="bi bi-exclamation-triangle"></i>
+            {% else %}
+                <i class="bi bi-truck"></i>
+            {% endif %}
+        </div>
+        <div class="event-content">
+            <h5>{{ event.get_event_type_display }}</h5>
+            <p>{{ event.description }}</p>
+            {% if event.operating_hours %}
+                <div class="text-muted">Наработка: {{ event.operating_hours }} м/час</div>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <div class="text-center py-3">Нет данных о событиях</div>
+    {% endfor %}
+</div>
+
+<style>
+    .timeline-container {
+        position: relative;
+        padding-left: 50px;
+    }
+    .timeline-event {
+        position: relative;
+        padding-bottom: 20px;
+    }
+    .event-date {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .event-icon {
+        position: absolute;
+        left: -40px;
+        top: 0;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #163E6C;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .event-content {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        border-left: 3px solid #D20A11;
+    }
+</style>

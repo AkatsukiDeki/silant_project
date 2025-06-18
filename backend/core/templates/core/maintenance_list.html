@@ -1,0 +1,31 @@
+<div class="d-flex justify-content-between mb-3">
+    <h3>Техническое обслуживание</h3>
+    {% if perms.core.add_maintenance %}
+        <a href="{% url 'maintenance-create' %}?vehicle={{ vehicle.pk }}" class="btn btn-primary">Добавить ТО</a>
+    {% endif %}
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Вид ТО</th>
+            <th>Наработка</th>
+            <th>Сервис</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for maintenance in vehicle.maintenances.all %}
+        <tr onclick="window.location='{% url 'maintenance-detail' maintenance.pk %}'" style="cursor: pointer;">
+            <td>{{ maintenance.date|date:"d.m.Y" }}</td>
+            <td>{{ maintenance.type.title }}</td>
+            <td>{{ maintenance.operating_hours }} м/час</td>
+            <td>{{ maintenance.service_company.get_full_name }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" class="text-center">Нет данных о ТО</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
